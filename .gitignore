@@ -5,3 +5,5 @@ pole/
 # Generated images
 generated-images/
 
+# pycache
+__pycache__/

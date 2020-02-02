@@ -1,7 +1,8 @@
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 import os
 from pathlib import Path
+from xml_generate import create_xml
 
 # Generates 1 image based on input of 2 images
 def img_gen(image1, image2, dirname):
@@ -38,15 +39,26 @@ def img_gen(image1, image2, dirname):
     im1 = im1.crop((topr, topc, botr, botc))
     
     # Scale down pole image
-    scale_down = (im1.width//3, im1.height//3)
+    n = 3
+    scale_down = (im1.width//n, im1.height//n)
     im1 = im1.resize(scale_down)
-    im2.paste(im1, (300, 300), im1)
     
+    # Paste image 1 on image 2
+    pos = (300, 300)
+    im2.paste(im1, pos, im1)
+
     # Determine new path
     NEW_PATH = dirname + '/generated-images/'
     
     # Call Habib's xml file to save xml
-    create_xml(NEW_PATH, image1, im2.size, ('pole', dim))
+    finalPos = (pos[0], pos[1], pos[0] + im1.width, pos[1]+im1.height)
+    create_xml(NEW_PATH, image1, im2.size, ('pole', finalPos))
+    
+    # # Test the rectangle
+    # draw = ImageDraw.Draw(im2)
+    # draw.rectangle((finalPos), outline=128)
+    # del draw
+    # im2.show()
     
     # Save image
     im2.save(NEW_PATH+image1, 'PNG')
