@@ -5,5 +5,8 @@ pole/
 # Generated images
 generated-images/
 
+# xml files folder
+xml_files/
+
 # pycache
 __pycache__/
