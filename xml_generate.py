@@ -4,7 +4,7 @@ import os
 
 # function takes in basic arguments from a data generator, and then outputs them
 # as an xml file in a specific subdirectory
-def create_xml(PATH, file, size, object):
+def create_xml(PATH, file, size, object, subfolder=''):
         
     annotation = Element('annotation')
 
@@ -49,7 +49,8 @@ def create_xml(PATH, file, size, object):
 
     # write the entire thing to a file as an xml file
     tree = ElementTree(annotation)
-    path_name = 'xml_files'
+    path_name = 'xml_files/' + subfolder + '/'
+    file = file.split('.')[0]
     DIRECTORY = os.path.join(path_name, file + '.xml')
     try: 
       tree.write(open(DIRECTORY, 'wb'))
@@ -59,7 +60,7 @@ def create_xml(PATH, file, size, object):
       tree.write(open(DIRECTORY, 'wb'))
     
 
-create_xml("desert-pole", "habib", (256, 256), ('habib', (15, 15, 40, 40)))
+# create_xml("desert-pole", "habib", (256, 256), ('habib', (15, 15, 40, 40)))
 
 
 '''

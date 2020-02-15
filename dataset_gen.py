@@ -1,69 +1,33 @@
-import numpy as np
-from PIL import Image, ImageDraw
+from img_gen import img_gen
 import os
-from pathlib import Path
-from xml_generate import create_xml
 
-# Generates 1 image based on input of 2 images
-def img_gen(image1, image2, dirname):
-    # Pull image from location
-    try:
-        im1 = Image.open(dirname+'/pole/'+image1)
-        im2 = Image.open(dirname+'/background/'+image2)
-    except:
-        print('No image')
-        return 'No image'
-    
-    # Convert image to numpy array grayscale
-    # Prepare for cropping
-    data = np.array(im1)
-    data = np.mean(data, axis=2)
+# Calls img gen and starts making poles from the middle
+def dataset_gen(PATH, pos_start=(0, 0), pos_mod=(10, 10)):
+    if pos_mod[0] <= 0 or posmod[1] <= 0: 
+        print('BAD MOD')
+        return 'BAD MOD'
+    # Get backgrounds
+    backgrounds = os.listdir(PATH + '/background')
 
-    # Find where to crop
-    topr, topc, botr, botc = 0,0,im1.width, im1.height
-    cols = np.mean(data, axis=1)
-    rows = np.mean(data, axis=0)
-    for c in cols:
-        if c != 0: break
-        topc += 1
-    for c in cols[::-1]:
-        if c != 0: break
-        botc -= 1 
-    for r in rows:
-        if r != 0: break
-        topr += 1
-    for r in rows[::-1]:
-        if r != 0: break
-        botr -= 1
-    dim = topc, botc, topr, botr
-    im1 = im1.crop((topr, topc, botr, botc))
-    
-    # Scale down pole image
-    n = 3
-    scale_down = (im1.width//n, im1.height//n)
-    im1 = im1.resize(scale_down)
-    
-    # Paste image 1 on image 2
-    pos = (300, 300)
-    im2.paste(im1, pos, im1)
+    # Get poles
+    poles = os.listdir(PATH + '/pole')
 
-    # Determine new path
-    NEW_PATH = dirname + '/generated-images/'
-    
-    # Call Habib's xml file to save xml
-    finalPos = (pos[0], pos[1], pos[0] + im1.width, pos[1]+im1.height)
-    create_xml(NEW_PATH, image1, im2.size, ('pole', finalPos))
-    
-    # # Test the rectangle
-    # draw = ImageDraw.Draw(im2)
-    # draw.rectangle((finalPos), outline=128)
-    # del draw
-    # im2.show()
-    
-    # Save image
-    im2.save(NEW_PATH+image1, 'PNG')
+    # reps
+    # Incomplete
+    reps = 0
+    for b in backgrounds:
+        for p in poles:
+            # subfolder name
+            subfolder = 'b' + b[-2:] 'p' + p[-2:]
+            saveName = 'num' + str(reps)
+
+            img_gen(pole=p, background=b, PATH=PATH,\
+                saveName=saveName, subfolder=subfolder)
 
 
-dirname = os.path.abspath(__file__)
-dirname = '/'.join((dirname.split('/')[:-1]))
-img_gen('woodPost1.png', 'background1.png', dirname)
+            reps += 1
+    pass
+
+# PATH = os.path.abspath(__file__)
+# PATH = '/'.join((PATH.split('/')[:-1]))
+# dataset_gen(PATH, 10)
