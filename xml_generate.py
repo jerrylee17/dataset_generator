@@ -72,7 +72,6 @@ def create_xml(PATH, file, size, object, subfolder=''):
         DIRECTORY = os.path.join(path_name, file + '.xml')
         tree.write(open(DIRECTORY, 'wb'))
 
-
 # create_xml("desert-pole", "habib", (256, 256), ('habib', (15, 15, 40, 40)))
 
 

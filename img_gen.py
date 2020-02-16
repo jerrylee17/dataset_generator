@@ -19,6 +19,7 @@ def img_gen(pole, background, PATH, saveName, \
     pos=(300, 300), scaleFactor=3, subfolder=''):
     
     saveName = saveName.split('.')[0]+'.png'
+
     # Pull image from location
     try:
         im1 = Image.open(PATH+'/pole/'+pole)
@@ -54,26 +55,31 @@ def img_gen(pole, background, PATH, saveName, \
     # Scale down pole image
     scale_down = (im1.width//scaleFactor, im1.height//scaleFactor)
     im1 = im1.resize(scale_down)
-    
-    if (pos[0] < 0 or pos[0] + im1.width > im2.width): 
+
+    # Create final position
+    finalPos = (pos[0], pos[1], pos[0] + im1.width, pos[1]+im1.height)
+    if (finalPos[0] < 0 or finalPos[2] > im2.width): 
         return 'WIDTH_ERR'
-    if (pos[1] < 0 or pos[1] + im1.height > im2.height): 
+    if (finalPos[1] < 0 or finalPos[3] > im2.height): 
         return 'HEIGHT_ERR'
+        
     # Paste image 1 on image 2
-    im2.paste(im1, pos, im1)
+    im2.paste(im1, finalPos, im1)
 
     # Determine new path
     NEW_PATH = PATH + '/generated-images/' + subfolder + '/'
     
-    # Call Habib's xml file to save xml
-    finalPos = (pos[0], pos[1], pos[0] + im1.width, pos[1]+im1.height)
+    # Check if new path exists
+    if not os.path.exists(NEW_PATH):
+        os.mkdir(NEW_PATH)
+
+    # Call xml file generator to save xml
     create_xml(NEW_PATH, saveName, im2.size, ('pole', finalPos), subfolder)
-    
+
     # # Test the rectangle
     # draw = ImageDraw.Draw(im2)
     # draw.rectangle((finalPos), outline=245)
     # del draw
-    # im2.show()
     
     # Save image
     im2.save(NEW_PATH+saveName, 'PNG')
@@ -85,4 +91,5 @@ def img_gen(pole, background, PATH, saveName, \
 # PATH = os.path.abspath(__file__)
 # PATH = '/'.join((PATH.split('/')[:-1]))
 # img_gen('woodPost1.png', 'background1.png', PATH, \
-#     'testing', pos=(300, 300), scaleFactor=7)
+#     'testing', pos=(300, 300), scaleFactor=7, \
+#     subfolder='testfolder')
