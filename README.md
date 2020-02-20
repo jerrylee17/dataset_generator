@@ -46,7 +46,7 @@ scaleFactor: int()      Scaling down pole factor
 subfolder: str()        Name of subfolder (ex: 'b1p2)
 </pre>
 
-### XML Generation:: `xml_generate.py`
+### XML Generation: `xml_generate.py`
 
 
 ## Old code / related repositories
