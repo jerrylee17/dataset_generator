@@ -4,7 +4,15 @@ import os
 
 # function takes in basic arguments from a data generator, and then outputs them
 # as an xml file in a specific subdirectory
-
+'''
+Inputs:
+    PATH: str()         Path of current directory
+    file: str()         Name of output file
+    size: (int, int)    Contains width and height of the pole in image
+    object: (string, [int, int, int, int])     
+                        Contains name of pole and it's four corners
+    subfolder: str()    Name of subfolder   ex: 'b1p2
+'''
 
 def create_xml(PATH, file, size, object, subfolder=''):
 

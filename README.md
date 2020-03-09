@@ -48,6 +48,19 @@ subfolder: str()        Name of subfolder (ex: 'b1p2)
 
 ### XML Generation: `xml_generate.py`
 
+Supplementary file that takes in several inputs to generate the XML file that 
+contains the meta data for each pole. 
+
+Here is a brief explanation of the parameters.
+<pre>
+Inputs:
+    PATH: str()         Path of current directory
+    file: str()         Name of output file
+    size: (int, int)    Contains width and height of the pole in image
+    object: (string, [int, int, int, int])     
+                        Contains name of pole and it's four corners
+    subfolder: str()    Name of subfolder   (ex: 'b1p2')
+</pre>
 
 ## Old code / related repositories
 1. [Batch partition script](https://github.com/jerrylee17/batch-partition-script)
